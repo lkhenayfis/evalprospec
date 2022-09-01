@@ -1,5 +1,6 @@
 ################################## FUNCOES PARA LEITURA DAS SAIDAS #################################
 
+library(data.table)
 
 # LEITURA DE ARQUIVOS INDIVIDUAIS ------------------------------------------------------------------
 
@@ -51,11 +52,22 @@ le_arquivoREE <- function(arq, variavel = NA_character_, pmo = NA_character_) {
     return(dat)
 }
 
-le_arquivoSIN <- function(path) {
-    dat <- fread(path)
+le_arquivoSIN <- function(arq, pmo = NA_character_) {
+    dat <- fread(arq)
     ncens <- ncol(dat) - 1
     colnames(dat) <- c("data", paste0("cen", seq_len(ncens)))
     dat <- dat[-1, ]
+    return(dat)
+
+    dat <- melt(dat, id.vars = c("data"), variable.name = "cenario", value.name = "valor")
+    dat[, cenario := as.numeric(sub("[[:alpha:]]*", "", cenario))]
+
+    if(is.na(variavel)) variavel <- guess_var(arq)
+    if(is.na(pmo)) pmo <- guess_pmo(arq)
+    dat[, c("variavel", "pmo") := list(variavel, pmo)]
+
+    setcolorder(dat, c("pmo", "cenario", "data", "variavel", "valor"))
+
     return(dat)
 }
 
