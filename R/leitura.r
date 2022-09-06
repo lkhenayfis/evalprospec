@@ -73,6 +73,19 @@ le_arquivoSIN <- function(arq, variavel = NA_character_, pmo = NA_character_) {
 
 # LEITURA COMPLETA DE ARQUIVOS DE UM DIRETORIO -----------------------------------------------------
 
+#' Leitura De Diretorios
+#' 
+#' Le e organiza num unico data.table todos os arquivos de simulacao num diretorio
+#' 
+#' \code{pmo} e adivinhada olhando o nome do diretorio onde \code{arq} se encontra. Tipicamente os 
+#' resultados sao salvos em diretorios nomeados por pmo. Em estruturas de arquivo diferentes, 
+#' valores espurios podem aparecer.
+#' 
+#' @param dir diretorio onde se encontram as saidas de simulacao
+#' @param tipos os tipos de agregacao dos arquivo a serem lidos. Um vetor se strings cujos elementos
+#'     estao entre \code{c("ree", "sin")}
+#' @param pmo opcional, o pmo de referencia (string, numerico etc). Ver Detalhes
+
 le_diretorio <- function(dir, tipos = c("ree", "sin"), pmo = NA_character_) {
 
     arqs <- list.files(dir, full.names = TRUE)
