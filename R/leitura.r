@@ -71,14 +71,20 @@ le_arquivoSIN <- function(arq, variavel = NA_character_, pmo = NA_character_) {
     return(dat)
 }
 
-guess_var <- function(arq) {
-    guess <- sub(".*/", "", arq)
-    guess <- strsplit(guess, "_")[[1]][1]
-    return(guess)
-}
+# LEITURA COMPLETA DE ARQUIVOS DE UM DIRETORIO -----------------------------------------------------
 
-guess_pmo <- function(arq) {
-    guess <- strsplit(arq, "/")[[1]]
-    guess <- tail(guess, 2)[1]
-    return(guess)
+le_diretorio <- function(dir, tipos = c("ree", "sin"), pmo = NA_character_) {
+
+    arqs <- list.files(dir, full.names = TRUE)
+    arqs <- lapply(tipos, function(tipo) arqs[grep(paste0(tipo, ".csv$"), arqs)])
+
+    dados <- mapply(tipos, arqs, FUN = function(tipo, vec) {
+        leitor <- selec_leitor(tipo)
+        dat <- lapply(vec, leitor)
+        dat <- rbindlist(dat)
+
+        return(dat)
+    }, SIMPLIFY = FALSE)
+
+    return(dados)
 }
