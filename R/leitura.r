@@ -49,7 +49,7 @@ le_arquivoREE <- function(arq, variavel = NA_character_, pmo = NA_character_) {
 
     setcolorder(dat, c("pmo", "REE", "cenario", "data", "variavel", "valor"))
 
-    return(dat)
+    new_dtsimul(dat, "REE")
 }
 
 le_arquivoSIN <- function(arq, variavel = NA_character_, pmo = NA_character_) {
@@ -68,7 +68,7 @@ le_arquivoSIN <- function(arq, variavel = NA_character_, pmo = NA_character_) {
 
     setcolorder(dat, c("pmo", "cenario", "data", "variavel", "valor"))
 
-    return(dat)
+    new_dtsimul(dat, "SIN")
 }
 
 # LEITURA COMPLETA DE ARQUIVOS DE UM DIRETORIO -----------------------------------------------------
@@ -94,10 +94,12 @@ le_diretorio <- function(dir, tipos = c("ree", "sin"), pmo = NA_character_) {
     dados <- mapply(tipos, arqs, FUN = function(tipo, vec) {
         leitor <- selec_leitor(tipo)
         dat <- lapply(vec, leitor)
-        dat <- rbindlist(dat)
+        dat <- do.call(rbind, dat)
 
         return(dat)
     }, SIMPLIFY = FALSE)
+
+    if(length(tipos) == 1) dados <- dados[[1]]
 
     return(dados)
 }
