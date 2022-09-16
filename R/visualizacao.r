@@ -1,5 +1,7 @@
 ################################ FUNCOES PARA VISUALIZACAO DE DADOS ################################
 
+library(ggplot2)
+
 plot.dtsimulREE <- function(x, vars = "EARP", rees = c("PARANA", "SUL", "NORDESTE"), pmos,
     highlight, ...) {
 
@@ -16,7 +18,7 @@ plot.dtsimulREE <- function(x, vars = "EARP", rees = c("PARANA", "SUL", "NORDEST
         highcens <- montahighlight(highlight)
         dplot2   <- merge(dplot, highcens)
 
-        gg + geom_line(data = dplot2, aes(data, valor, group = cenario, color = quantil), lwd = 1) +
+        gg <- gg + geom_line(data = dplot2, aes(data, valor, group = cenario, color = quantil), lwd = 1) +
             scale_color_viridis_d()
     }
 
@@ -38,7 +40,7 @@ plot.dtsimulSIN <- function(x, vars = "EARP", pmos, highlight, ...) {
         highcens <- montahighlight(highlight)
         dplot2   <- merge(dplot, highcens)
 
-        gg + geom_line(data = dplot2, aes(data, valor, group = cenario, color = quantil), lwd = 1) +
+        gg <- gg + geom_line(data = dplot2, aes(data, valor, group = cenario, color = quantil), lwd = 1) +
             scale_color_viridis_d()
     }
 
