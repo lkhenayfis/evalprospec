@@ -1,18 +1,19 @@
 ############################### FUNCOES PARA RANKEAMENTO DE CENARIOS ###############################
 
-rank_cenarios <- function(dat, rankfun = rf_earm_sin, quantis = c(.1, .5, .9), ...) {
-    ncens <- attr(dat, "ncen")
-    dat <- dat$simul
+rank_cenarios <- function(dat, rankfun = rf_earm_sin, quantis = c(.25, .5, .9), jitter = 0, ...) {
 
+    if(length(jitter) == 1) jitter <- seq(-jitter, jitter)
+    qnames <- paste0(formatC(quantis * 100, format = "f", digits = 2), "%")
+
+    dat  <- dat$simul
     ldat <- split(dat, dat$pmo)
-    ldat <- lapply(ldat, evalsubsets, subsets)
-
     rank <- lapply(ldat, rankfun, ...)
     rank <- lapply(rank, function(r) r[, prob := seq_len(.N) / .N])
     rank <- lapply(rank, function(r) {
         inds <- valmaisprox(quantis, r$prob)
-        out <- r[inds, cenario]
-        names(out) <- paste0(formatC(quantis * 100, format = "f", digits = 2), "%")
+        inds <- lapply(jitter, function(j) inds + j)
+        names(inds) <- paste0("j", jitter)
+        out <- lapply(inds, function(i) structure(r[i, cenario], names = qnames))
         out
     })
 
