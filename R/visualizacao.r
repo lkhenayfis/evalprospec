@@ -5,10 +5,11 @@ plot.dtsimulREE <- function(x, vars = "EARP", rees = c("PARANA", "SUL", "NORDEST
 
     if(missing("pmos")) pmos <- attr(x, "pmos")
     dplot <- x$simul[(variavel %in% vars) & (REE %in% rees) & (pmo %in% pmos)]
+    dplot[, quadro := paste0(REE, "---", variavel, " --- ", pmo)]
 
     gg <- ggplot() +
         geom_line(data = dplot, aes(data, valor, group = cenario), color = "grey80") +
-        facet_grid(pmo ~ REE + variavel, scales = "free") +
+        facet_wrap(~ quadro, scales = "free_y", ncol = length(vars) * length(rees), dir = "v") +
         theme_bw()
 
     if(!missing("highlight")) {
@@ -26,10 +27,11 @@ plot.dtsimulSIN <- function(x, vars = "EARP", pmos, highlight, ...) {
 
     if(missing("pmos")) pmos <- attr(x, "pmos")
     dplot <- x$simul[(variavel %in% vars) & (pmo %in% pmos)]
+    dplot[, quadro := paste0(variavel, " --- ", pmo)]
 
     gg <- ggplot() +
         geom_line(data = dplot, aes(data, valor, group = cenario), color = "grey80") +
-        facet_grid(pmo ~ variavel, scales = "free") +
+        facet_wrap(~ quadro, scales = "free_y", ncol = length(vars), dir = "v") +
         theme_bw()
 
     if(!missing("highlight")) {
