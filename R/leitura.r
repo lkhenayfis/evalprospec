@@ -38,7 +38,6 @@ le_arquivoREE <- function(arq, variavel = NA_character_, pmo = NA_character_) {
     dat   <- fread(arq)
     ncens <- ncol(dat) - 2
     colnames(dat) <- c("REE", "data", paste0("cen", seq_len(ncens)))
-    dat <- dat[-1, ]
 
     dat <- melt(dat, id.vars = c("data", "REE"), variable.name = "cenario", value.name = "valor")
     dat[, cenario := as.numeric(sub("[[:alpha:]]*", "", cenario))]
@@ -57,7 +56,6 @@ le_arquivoSIN <- function(arq, variavel = NA_character_, pmo = NA_character_) {
     dat <- fread(arq)
     ncens <- ncol(dat) - 1
     colnames(dat) <- c("data", paste0("cen", seq_len(ncens)))
-    dat <- dat[-1, ]
 
     dat <- melt(dat, id.vars = c("data"), variable.name = "cenario", value.name = "valor")
     dat[, cenario := as.numeric(sub("[[:alpha:]]*", "", cenario))]
