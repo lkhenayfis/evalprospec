@@ -22,6 +22,27 @@ plot.dtsimulREE <- function(x, vars = "EARP", rees = c("PARANA", "SUL", "NORDEST
     return(gg)
 }
 
+plot.dtsimulSIN <- function(x, vars = "EARP", pmos, highlight, ...) {
+
+    if(missing("pmos")) pmos <- attr(x, "pmos")
+    dplot <- x$simul[(variavel %in% vars) & (pmo %in% pmos)]
+
+    gg <- ggplot() +
+        geom_line(data = dplot, aes(data, valor, group = cenario), color = "grey80") +
+        facet_grid(pmo ~ variavel, scales = "free") +
+        theme_bw()
+
+    if(!missing("highlight")) {
+        highcens <- montahighlight(highlight)
+        dplot2   <- merge(dplot, highcens)
+
+        gg + geom_line(data = dplot2, aes(data, valor, group = cenario, color = quantil), lwd = 1) +
+            scale_color_viridis_d()
+    }
+
+    return(gg)
+}
+
 # HELPERS ------------------------------------------------------------------------------------------
 
 montahighlight <- function(cens) {
