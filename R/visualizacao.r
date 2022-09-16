@@ -18,7 +18,9 @@ plot.dtsimulREE <- function(x, vars = "EARP", rees = c("PARANA", "SUL", "NORDEST
         highcens <- montahighlight(highlight)
         dplot2   <- merge(dplot, highcens)
 
-        gg <- gg + geom_line(data = dplot2, aes(data, valor, group = cenario, color = quantil), lwd = 1) +
+        gg <- gg +
+            geom_line(data = dplot2, aes(data, valor, group = cenario,
+                linetype = jitter, color = quantil), lwd = 1) +
             scale_color_viridis_d()
     }
 
@@ -40,7 +42,9 @@ plot.dtsimulSIN <- function(x, vars = "EARP", pmos, highlight, ...) {
         highcens <- montahighlight(highlight)
         dplot2   <- merge(dplot, highcens)
 
-        gg <- gg + geom_line(data = dplot2, aes(data, valor, group = cenario, color = quantil), lwd = 1) +
+        gg <- gg +
+            geom_line(data = dplot2, aes(data, valor, group = cenario,
+                linetype = jitter, color = quantil), lwd = 1) +
             scale_color_viridis_d()
     }
 
@@ -51,8 +55,23 @@ plot.dtsimulSIN <- function(x, vars = "EARP", pmos, highlight, ...) {
 
 montahighlight <- function(cens) {
     cens <- lapply(names(cens), function(pmo) {
-        data.table(pmo = pmo, cenario = unname(cens[[pmo]]), quantil = names(cens[[pmo]]))
+        lpmo <- cens[[pmo]]
+        lout <- lapply(names(lpmo), function(j) {
+            data.table(
+                pmo = pmo,
+                cenario = unname(lpmo[[j]]),
+                quantil = names(lpmo[[j]]),
+                jitter = j
+            )
+        })
+        rbindlist(lout)
     })
     cens <- rbindlist(cens)
+
+    ord <- cens[, as.numeric(sub("j-?", "", unique(jitter)))]
+    ord <- order(abs(ord))
+    cens[, jitter := factor(jitter, levels = unique(jitter)[ord])]
+    cens
+
     return(cens)
 }
