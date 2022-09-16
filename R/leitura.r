@@ -37,7 +37,7 @@ le_arquivoREE <- function(arq, variavel = NA_character_, pmo = NA_character_) {
 
     dat   <- fread(arq)
     ncens <- ncol(dat) - 2
-    colnames(dat) <- c("data", paste0("cen", seq_len(ncens)), "REE")
+    colnames(dat) <- c("REE", "data", paste0("cen", seq_len(ncens)))
     dat <- dat[-1, ]
 
     dat <- melt(dat, id.vars = c("data", "REE"), variable.name = "cenario", value.name = "valor")
@@ -89,7 +89,7 @@ le_arquivoSIN <- function(arq, variavel = NA_character_, pmo = NA_character_) {
 le_diretorio <- function(dir, tipos = c("ree", "sin"), pmo = NA_character_) {
 
     arqs <- list.files(dir, full.names = TRUE)
-    arqs <- lapply(tipos, function(tipo) arqs[grep(paste0(tipo, ".csv$"), arqs)])
+    arqs <- lapply(tipos, function(tipo) arqs[grep(paste0("_", toupper(tipo), "_"), arqs)])
 
     dados <- mapply(tipos, arqs, FUN = function(tipo, vec) {
         leitor <- selec_leitor(tipo)
