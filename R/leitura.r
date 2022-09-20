@@ -91,7 +91,7 @@ le_diretorio <- function(dir, tipos = c("ree", "sin"), pmo = NA_character_) {
 
     dados <- mapply(tipos, arqs, FUN = function(tipo, vec) {
         leitor <- selec_leitor(tipo)
-        dat <- lapply(vec, leitor)
+        dat <- lapply(vec, leitor, pmo = pmo)
         dat <- do.call(rbind, dat)
 
         return(dat)
