@@ -1,0 +1,25 @@
+{
+    // Diretorio onde encontrar as pastas de simulacao por PMO
+    "ROOT_SIMUL": "../pmos/simul_CFS",
+
+    // Diretorio para escrita das saidas. "" Escreve um nivel acima de onde estao os arquivos de
+    // saida da simulacao. Se for fornecido um caminho, sera criada uma pasta com nome PMO_out neste 
+    // diretorio onde serao salvas as saidas
+    "OUT_DIR": "./out/simul_CFS",
+
+    // PMO para o qual realizar o rankeamento. "" usa o mais recente na pasta
+    "PMO": "",
+
+    // Se arquivos de saida da simulacao estao em ROOT_SIMUL/PMO ou num subdiretorio "sintese".
+    // "" deixa decisao automatica
+    "SINTESE": "",
+
+    // Se existem subdiretorios "melhor"-"pior". "" deixa decisao automatica
+    "MELHORPIOR": "",
+
+    "RANKING": {
+        "default": {"rankfun": "rf_earm_gter_sin", "quantis": [0.10, 0.75], "jitter": 2},
+        "pior": {"rankfun": "rf_earm_gter_sin", "quantis": 0.10, "jitter": 2},
+        "melhor": {"rankfun": "rf_earm_gter_sin", "quantis": 0.75, "jitter": 2}
+    }
+}
