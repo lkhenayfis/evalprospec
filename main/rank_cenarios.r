@@ -103,3 +103,5 @@ main <- function(arq_conf, activate = TRUE) {
         ggsave(file.path(outdir, "selec_quant.jpeg"), gg, width = 12, height = 9)
     }
 }
+
+main()
