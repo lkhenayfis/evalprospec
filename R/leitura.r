@@ -1,6 +1,6 @@
 ################################## FUNCOES PARA LEITURA DAS SAIDAS #################################
 
-library(data.table)
+suppressWarnings(suppressPackageStartupMessages(library(data.table)))
 
 # LEITURA DE ARQUIVOS INDIVIDUAIS ------------------------------------------------------------------
 

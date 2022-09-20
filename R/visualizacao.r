@@ -1,6 +1,6 @@
 ################################ FUNCOES PARA VISUALIZACAO DE DADOS ################################
 
-library(ggplot2)
+suppressWarnings(suppressPackageStartupMessages(library(ggplot2)))
 
 plot.dtsimulREE <- function(x, vars = "EARP", rees = c("PARANA", "SUL", "NORDESTE"), pmos,
     highlight, ...) {
