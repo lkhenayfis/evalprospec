@@ -9,6 +9,9 @@ rank_cenarios <- function(dat, rankfun = rf_earm_sin, quantis = c(.25, .5, .9), 
     ldat <- split(dat, dat$pmo)
     rank <- lapply(ldat, rankfun, ...)
     rank <- lapply(rank, function(r) r[, prob := seq_len(.N) / .N])
+
+    if(is.null(quantis)) return(rank)
+
     rank <- lapply(rank, function(r) {
         inds <- valmaisprox(quantis, r$prob)
         inds <- lapply(jitter, function(j) inds + j)
