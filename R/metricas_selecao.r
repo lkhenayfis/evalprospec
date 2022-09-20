@@ -14,13 +14,13 @@
 #' @param dat objeto do tipo \code{dtsimul} contendo resultados da simulacao dos cenarios a rankear
 #' @param rankfun funcao que recebe data.table de resultados da simulacao para um unico pmo e retorna
 #'     o mesmo data.table ordenado em ordem crescente da metrica. Ver Detalhes
-#' @param quantis opcional, vetor de quantis a selecionar do rankeamento. Se \code{NULL}, retorna o 
+#' @param quantis opcional, vetor de quantis a selecionar do rankeamento. Se \code{NA}, retorna o 
 #'     rankeamento completo
 #' @param jitter um inteiro indicando quantos cenarios acima e abaixo daqueles associados aos 
 #'     quantis devem ser retornados, para analise de sensibilidade. Default 0
 #' 
-#' @return se \code{quantis != NULL}, uma lista de dois niveis: primeiro nivel indicando o pmo, 
-#'     segundo nivel os leveis de jitter. Se \code{quantis == NULL}, uma lista de um nivel contendo
+#' @return se \code{quantis != NA}, uma lista de dois niveis: primeiro nivel indicando o pmo, 
+#'     segundo nivel os leveis de jitter. Se \code{quantis == NA}, uma lista de um nivel contendo
 #'     o rankeamento completo para cada pmo
 
 rank_cenarios <- function(dat, rankfun = rf_earm_sin, quantis = c(.25, .5, .9), jitter = 0, ...) {
@@ -33,7 +33,7 @@ rank_cenarios <- function(dat, rankfun = rf_earm_sin, quantis = c(.25, .5, .9), 
     rank <- lapply(ldat, rankfun, ...)
     rank <- lapply(rank, function(r) r[, prob := seq_len(.N) / .N])
 
-    if(is.null(quantis)) return(rank)
+    if(is.na(quantis)) return(rank)
 
     rank <- lapply(rank, function(r) {
         inds <- valmaisprox(quantis, r$prob)
