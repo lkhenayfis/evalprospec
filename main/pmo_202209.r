@@ -32,6 +32,8 @@ fwrite(rank_pior_full, file.path("out", nomebase, "rank_pior.csv"))
 
 # PLOTS ------------------------------------------------------------------------
 
+dd_prelim <- rbind(dd_melhor, dd_pior)
+
 rank_melhor <- rank_cenarios(dd_melhor, rf_earm_gter_sin, .75, 3)
 rank_pior   <- rank_cenarios(dd_pior,   rf_earm_gter_sin, .1,  3)
 
@@ -93,29 +95,22 @@ fwrite(rank_pior_full, file.path("out", nomebase, "rank_pior.csv"))
 
 # PLOTS ------------------------------------------------------------------------
 
-#rankk <- list(pmo_202209 = list(j0 = c("10.00%" = 111, "75.00%" = 6)))
+rankk <- list(pmo_202209 = list(j0 = c("10.00%" = 107, "75.00%" = 47)))
 
-gg <- plot(rbind(dd_pior, dd_melhor), highlight = rankk)
+gg <- plot(rbind(dd_pior, dd_melhor), highlight = rankk) +
+    scale_x_date(date_labels = "%b/%Y", date_breaks = "1 month")
 ggsave("out/simul_CFS/pmo_202209/selected.jpeg", gg, width = 9, height = 6)
 
 ##############################
 
-rankk2 <- list(pmo_202209 = list(
-    j0 = c("10.00%" = 111, "75.00%" = 6),
-    j1 = c("10.00%" = 89, "75.00%" = 8)
-))
-gg2 <- plot(rbind(dd_pior, dd_melhor), highlight = rankk2) +
-    scale_linetype_discrete(name = "Métrica", labels = c("EAR_GT", "ENA")) +
-    scale_y_continuous(limits = c(0, 100)) +
+rankk <- list(pmo_202209 = list(j0 = c("10.00%" = 107, "75.00%" = 47)))
+
+dd_prelim_plot <- dd_prelim$simul[(cenario %in% c(111, 6)) & (variavel == "EARP")]
+dd_prelim_plot[, quantil := rep(c("75.00%", "10.00%"), each = .N / 2)]
+dd_prelim_plot[, jitter := "j1"]
+
+gg <- plot(rbind(dd_pior, dd_melhor), highlight = rankk) +
+    geom_line(data = dd_prelim_plot, aes(data, valor, group = cenario, linetype = jitter, color = quantil), lwd = 1) +
+    scale_linetype_discrete(name = "Seleção", labels = c("Definitivo", "Preliminar")) +
     scale_x_date(date_labels = "%b/%Y", date_breaks = "1 month")
-ggsave("out/simul_CFS/pmo_202209/selected_com_ena.jpeg", gg2, width = 9, height = 6)
-
-##############################
-
-dplot <- rbind(
-    cbind(dd_melhor$simul, ecmwf = "melhor"),
-    cbind(dd_pior$simul, ecmwf = "pior")
-)
-
-ggplot() +
-    geom_line(data = dplot[variavel == "EARP"], aes(data, valor, group = cenario, color = ecmwf), alpha = .5)
+ggsave("out/simul_CFS/pmo_202209/selected2.jpeg", gg, width = 9, height = 6)
