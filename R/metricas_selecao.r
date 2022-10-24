@@ -79,7 +79,7 @@ rf_ena_sin <- function(d, ask = FALSE, ...) {
 rf_earm_sin <- function(d, ask = FALSE, ...) {
     if(ask) return("sin")
 
-    d <- d[variavel == "EARM", tail(valor, 1), by = cenario]
+    d <- d[variavel == "EARMF", tail(valor, 1), by = cenario]
     setorder(d, V1)
     return(d)
 }
@@ -88,7 +88,7 @@ rf_earm_gter_sin <- function(d, pesos = c(0, 0, 0, 0, 0, 1), ask = FALSE, ...) {
     if(ask) return("sin")
 
     d <- dcast(d, pmo + cenario + data ~ variavel, value.var = "valor")
-    d <- d[, tail(EARM, 1) - sum(GTER), by = cenario]
+    d <- d[, tail(EARMF, 1) - sum(GTER), by = cenario]
     setorder(d, V1)
     return(d)
 }
@@ -96,7 +96,7 @@ rf_earm_gter_sin <- function(d, pesos = c(0, 0, 0, 0, 0, 1), ask = FALSE, ...) {
 rf_earm_parana <- function(d, pesos = c(0, 0, 0, 0, 0, 1), ask = FALSE, ...) {
     if(ask) return("ree")
 
-    d <- d[(REE == "PARANA") & (variavel == "EARM"), weighted.mean(valor, pesos), by = cenario]
+    d <- d[(REE == "PARANA") & (variavel == "EARMF"), weighted.mean(valor, pesos), by = cenario]
     setorder(d, V1)
     return(d)
 }
