@@ -43,7 +43,7 @@ main <- function(arq_conf, activate = TRUE) {
     # identificacao do root para ativacao do ambiente virtual. Isso e necessario pois o renv nao
     # pode ser ativado "por fora" como em python
     # INSTALLDIR e uma variavel de ambiente definida dentro do script de uso do programa
-    root <- Sys.getenv("INSTALLDIR", getwd())
+    root <- Sys.getenv("DIR_EVALPROSPEC", getwd())
 
     if(activate) {
         wd0 <- getwd()
