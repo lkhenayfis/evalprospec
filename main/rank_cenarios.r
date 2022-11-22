@@ -29,7 +29,7 @@ parseconf <- function(CONF) {
     }
 
     if(CONF$SINTESE == "") CONF$SINTESE <- dir.exists(file.path(CONF$DIRSIMUL[1], "sintese"))
-    if(CONF$SINTESE) CONF$DIRSIMUL <- file.path(CONF$DIRSIMUL, "sintese")
+    if(CONF$SINTESE) CONF$DIRSIMUL <- sapply(CONF$DIRSIMUL, file.path, "sintese")
 
     CONF$OUT_DIR <- structure(file.path(CONF$OUT_DIR, "evalsimul_out"), names = names(CONF$OUT_DIR))
 
