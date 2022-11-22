@@ -98,7 +98,7 @@ main <- function(arq_conf, activate = TRUE) {
         ranking$dat <- datsimul
         ranking <- eval(ranking)
         cor <- switch(tiposimul, "default" = 1, "melhor" = 4, "pior" = 2)
-        gg <- plot(datsimul, c("EARP", "ENA", "GTER"), highlight = ranking) +
+        gg <- plot(datsimul, c("EARMF", "GTER"), highlight = ranking) +
             scale_color_manual(values = cor)
         ggsave(file.path(outdir, "selec_quant.jpeg"), gg, width = 12, height = 9)
     }
