@@ -36,14 +36,10 @@ suppressWarnings(suppressPackageStartupMessages(library(data.table)))
 le_arquivoREE <- function(arq, variavel = NA_character_, pmo = NA_character_) {
 
     dat   <- fread(arq)
-    ncens <- ncol(dat) - 3
-    colnames(dat) <- c("REE", "estagio", "dataini", "datafim", paste0("cen", seq_len(ncens)))
+    colnames(dat) <- c("REE", "estagio", "dataini", "datafim", "cenario", "valor")
 
     dat[, c("estagio", "datafim") := .(NULL, NULL)]
     colnames(dat)[2] <- "data"
-
-    dat <- melt(dat, id.vars = c("data", "REE"), variable.name = "cenario", value.name = "valor")
-    dat[, cenario := as.numeric(sub("[[:alpha:]]*", "", cenario))]
 
     if(is.na(variavel)) variavel <- guess_var(arq)
     if(is.na(pmo)) pmo <- guess_pmo(arq)
@@ -57,14 +53,10 @@ le_arquivoREE <- function(arq, variavel = NA_character_, pmo = NA_character_) {
 le_arquivoSIN <- function(arq, variavel = NA_character_, pmo = NA_character_) {
 
     dat <- fread(arq)
-    ncens <- ncol(dat) - 3
-    colnames(dat) <- c("estagio", "dataini", "datafim", paste0("cen", seq_len(ncens)))
+    colnames(dat) <- c("estagio", "dataini", "datafim", "cenario", "valor")
 
     dat[, c("estagio", "datafim") := .(NULL, NULL)]
     colnames(dat)[1] <- "data"
-
-    dat <- melt(dat, id.vars = c("data"), variable.name = "cenario", value.name = "valor")
-    dat[, cenario := as.numeric(sub("[[:alpha:]]*", "", cenario))]
 
     if(is.na(variavel)) variavel <- guess_var(arq)
     if(is.na(pmo)) pmo <- guess_pmo(arq)
