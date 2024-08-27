@@ -93,7 +93,11 @@ le_arquivoSIN <- function(arq, variavel = NA_character_, pmo = NA_character_) {
 le_diretorio <- function(dir, tipos = c("ree", "sin"), pmo = NA_character_) {
 
     arqs <- list.files(dir, full.names = TRUE)
-    arqs <- lapply(tipos, function(tipo) arqs[grep(paste0("_", toupper(tipo), "_"), arqs)])
+    remove <- lapply(c("ESTATISTICAS_", "METADADOS_"), function(x) grepl(x, arqs))
+    remove <- Reduce("|", remove)
+
+    arqs <- arqs[!remove]
+    arqs <- lapply(tipos, function(tipo) arqs[grep(paste0("_", toupper(tipo)), arqs)])
 
     dados <- mapply(tipos, arqs, FUN = function(tipo, vec) {
         leitor <- selec_leitor(tipo)
