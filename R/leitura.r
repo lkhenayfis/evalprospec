@@ -36,10 +36,14 @@ suppressWarnings(suppressPackageStartupMessages(library(data.table)))
 le_arquivoREE <- function(arq, variavel = NA_character_, pmo = NA_character_) {
 
     dat   <- fread(arq)
-    colnames(dat) <- c("REE", "estagio", "dataini", "datafim", "cenario", "valor")
+    colnames(dat) <- c("REE", "SBM", "estagio", "dataini", "datafim", "cenario", "pat", "durpat", "valor", "liminf", "limsup")
 
-    dat[, c("estagio", "datafim") := .(NULL, NULL)]
+    dat <- dat[pat == 0]
+    dat[, c("SBM", "estagio", "datafim", "pat",  "durpat", "liminf", "limsup") := .(NULL, NULL, NULL, NULL, NULL, NULL, NULL)]
+
     colnames(dat)[2] <- "data"
+    
+    setorder(dat, data, cenario)
 
     if(is.na(variavel)) variavel <- guess_var(arq)
     if(is.na(pmo)) pmo <- guess_pmo(arq)
@@ -53,10 +57,14 @@ le_arquivoREE <- function(arq, variavel = NA_character_, pmo = NA_character_) {
 le_arquivoSIN <- function(arq, variavel = NA_character_, pmo = NA_character_) {
 
     dat <- fread(arq)
-    colnames(dat) <- c("estagio", "dataini", "datafim", "cenario", "valor")
+    colnames(dat) <- c("estagio", "dataini", "datafim", "cenario", "pat", "durpat", "valor", "liminf", "limsup")
 
-    dat[, c("estagio", "datafim") := .(NULL, NULL)]
+    dat <- dat[pat == 0]
+    dat[, c("estagio", "datafim", "pat", "durpat", "liminf", "limsup") := .(NULL, NULL, NULL, NULL, NULL, NULL)]
+    
     colnames(dat)[1] <- "data"
+
+    setorder(dat, data, cenario)
 
     if(is.na(variavel)) variavel <- guess_var(arq)
     if(is.na(pmo)) pmo <- guess_pmo(arq)
