@@ -17,13 +17,13 @@ parseconf <- function(CONF) {
     CONF$DIRSIMUL <- file.path(CONF$ROOT_SIMUL, CONF$PMO)
     CONF$OUT_DIR  <- file.path(CONF$OUT_DIR,    CONF$PMO)
 
-    if(CONF$MELHORPIOR == "") CONF$MELHORPIOR <- dir.exists(file.path(CONF$DIRSIMUL, "melhor"))
-    if(CONF$MELHORPIOR) {
-        CONF$DIRSIMUL <- file.path(CONF$DIRSIMUL, c("pior", "melhor"))
-        CONF$OUT_DIR <- file.path(CONF$OUT_DIR, c("pior", "melhor"))
+    if(CONF$SUPERIORINFERIOR == "") CONF$SUPERIORINFERIOR <- dir.exists(file.path(CONF$DIRSIMUL, "superior"))
+    if(CONF$SUPERIORINFERIOR) {
+        CONF$DIRSIMUL <- file.path(CONF$DIRSIMUL, c("inferior", "superior"))
+        CONF$OUT_DIR <- file.path(CONF$OUT_DIR, c("inferior", "superior"))
 
-        names(CONF$DIRSIMUL) <- c("pior", "melhor")
-        names(CONF$OUT_DIR) <- c("pior", "melhor")
+        names(CONF$DIRSIMUL) <- c("inferior", "superior")
+        names(CONF$OUT_DIR) <- c("inferior", "superior")
     } else {
         names(CONF$DIRSIMUL) <- "default"
     }
@@ -97,7 +97,7 @@ main <- function(arq_conf, activate = TRUE) {
 
         ranking$dat <- datsimul
         ranking <- eval(ranking)
-        cor <- switch(tiposimul, "default" = 1, "melhor" = 4, "pior" = 2)
+        cor <- switch(tiposimul, "default" = 1, "superior" = 4, "inferior" = 2)
         gg <- plot(datsimul, c("EARMF", "GTER"), highlight = ranking) +
             scale_color_manual(values = cor)
         ggsave(file.path(outdir, "selec_quant.jpeg"), gg, width = 12, height = 9)
