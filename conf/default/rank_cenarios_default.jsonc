@@ -14,12 +14,12 @@
     // "" deixa decisao automatica
     "SINTESE": "",
 
-    // Se existem subdiretorios "melhor"-"pior". "" deixa decisao automatica
-    "MELHORPIOR": "",
+    // Se existem subdiretorios "superior"-"inferior". "" deixa decisao automatica
+    "SUPERIORINFERIOR": "",
 
     "RANKING": {
         "default": {"rankfun": "rf_earm_gter_sin", "quantis": [0.10, 0.75], "jitter": 2},
-        "pior": {"rankfun": "rf_earm_gter_sin", "quantis": 0.10, "jitter": 2},
-        "melhor": {"rankfun": "rf_earm_gter_sin", "quantis": 0.75, "jitter": 2}
+        "inferior": {"rankfun": "rf_earm_gter_sin", "quantis": 0.10, "jitter": 2},
+        "superior": {"rankfun": "rf_earm_gter_sin", "quantis": 0.75, "jitter": 2}
     }
 }
